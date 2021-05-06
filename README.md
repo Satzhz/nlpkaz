@@ -12,7 +12,7 @@ Hardware requirements:
 
 How to use the monolingual NLP tools
 Repository consist following directories:
-preprocess/ - in the folder consist modules for text preprocessing 
-templates/ - in the folder consist modules for morphological analysis, search (words or collocation)
-db.sqlite3 - database of fragment texts (save preprocessed: tokens, wordform, pos-taggs parts of speech, etc.) and a list of users (linguists)
-files/ - scripts used for web design of html files
+- preprocess/ - in the folder consist modules for text preprocessing 
+- templates/ - in the folder consist modules for morphological analysis, search (words or collocation)
+- db.sqlite3 - database of fragment texts (save preprocessed: tokens, wordform, pos-taggs parts of speech, etc.) and a list of users (linguists)
+ - files/ - scripts used for web design of html files
