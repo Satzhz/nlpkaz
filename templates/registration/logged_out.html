@@ -1,0 +1,18 @@
+{% extends "base_sign.html" %}
+{% block title %}  Выход {% endblock %}
+{% block content %}
+
+<div class="container p-5 text-center">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 card p-4">
+            <div class="alert alert-info">Вы успешно вышли из сайта!</div>
+            <a href="/" class="btn btn-success mt-4"> На главную</a>
+            <a href="{% url 'login'%}" class="mt-3">
+                Переходите по ссылке чтобы снова войти сайт
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load get_string_as_list %}
+
+{% block title %} Text search {% endblock %}
+
+{% block content %}
+<style>
+   .fig {
+    text-align: center; 
+   }
+  </style>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="">Сөз немесе сөз тіркесін енгізіңіз</label>
+        <div class="input-group mb-3">
+            <input 
+                type="text" 
+                name="search" 
+                value="{% if search %}{{ search }}{% endif %}"   
+                class="form-control" 
+                placeholder="Введите слово или фразу" 
+                aria-label="Введите слово или фразу" 
+                aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-success" id="basic-addon2">ІЗДЕУ/SEARCH/ПОИСК</button>
+            </div>
+        </div>
+    </form>
+    {% if search %}
+        {% if sentences|length > 0 %}
+            {% for sentence in sentences %}
+            <div class="resulst">
+                {% for word in words %}
+                    {% for w  in word %}
+                        {% if sentence.id == w.sentence_id %}
+                        <span 
+                        data-toggle="popover" 
+                        title="Сөз формалары"
+                        data-trigger="hover"
+                        data-content='
+                        {% if wordforms %}
+                            {% for wordform in wordforms %}
+                                {% for item in wordform %}
+                                    {% if item.word_id == w.id %}
+                                        <span>
+                                            <b>  {{ item.wordform  }} </b> - 
+                                            {% for a_o in item.apertium_output|get_string_as_list %}
+                                                {% if tags %}
+                                                    {% for tag in tags %}
+                                                        {% if tag.symbol == a_o %}
+                                                            {{ tag.eng_title }},
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            <br>
+                                        </span>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% endif %}'
+                        data-html="true"
+                        {% if w.word|lower == search|lower %}
+                            style="color: yellow"
+                        {% endif %}
+                        >
+                        {{ w.word  }}</span>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <br><br>
+            {% endfor %}
+        {% else  %}
+        <div class="alert alert-danger">
+            Сіздің сұрату бойынша текст табылмады
+        </div>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info">       
+                </div>
+       
+	  <p class="fig"> <img src="/static/images/111.png" width="465" height="258" alt="Иллюстрация">
+    {% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+     <script>
+    $(document).ready(function () {
+        $(".result").each(function(index){
+        var src_str = $(this).text();
+        var term = "{{ search }}";
+        term = term.replace(/(\s+)/,"(<[^>]+>)*$1(<[^>]+>)*");
+        var pattern = new RegExp("("+term+")", "gi");
+        src_str = src_str.replace(pattern, "<span class='search-text'>$1</span>");
+        src_str = src_str.replace(/(<span class='search-text'>[^<>]*)((<[^>]+>)+)([^<>]*<\/span>)/,"$1</span>$2<span>$4");
+        $(this).html(src_str);
+        });
+    });
+    </script>
+{% endblock %}

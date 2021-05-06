@@ -1,0 +1,69 @@
+{% extends "base_sign.html" %}
+{% block title %} Вход {% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-4">
+        <div class="card p-5 " >
+          <div class="text-center">
+            <i class="fa fa-sign-in-alt" style="font-size: 55px;"></i>
+          </div>
+          <div class="mt-10">
+                {% if next %}
+                  {% if user.is_authenticated %}
+                  <p>У Вас нету доступа на эту страницу.</p>
+                  {% else %}
+                  <p>Пожалуйста, переходите на сайт чтобы войти.</p>
+                  {% endif %}
+              {% endif %}          
+              <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                {% if form.errors %}
+                <div class="alert alert-danger mt-3">
+                  Логин или пароль неправильны! Пожалуйста, проверьте введенные данные!
+                </div>
+                {% endif %}
+                <div class="mt-4">
+                    <input 
+                    type="text" 
+                    id="{{ form.username.id_for_label }}"
+                    maxlength="30" 
+                    name="{{ form.username.html_name }}" 
+                    placeholder="Логин" 
+                    required 
+                    class="form-control">
+                </div>
+                <div class="mt-4">
+                    <input 
+                    type="password" 
+                    id="{{ form.password.id_for_label }}"
+                    maxlength="30" 
+                    name="{{ form.password.html_name }}" 
+                    placeholder="Пароль" 
+                    required 
+                    class="form-control">
+                </div>
+                <button type="submit" class="mt-4 btn btn-success btn-block">Вход</button>
+                <input type="hidden" name="next" value="{{ next }}" />
+              </form>          
+              <p class="mt-3 text-center">
+                <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+              </p>
+          </div> 
+        </div>
+        <div class="card px-5  py-4 mt-4 text-center">
+          <span>
+            Нет  аккаунта ? <a href="/signup">Регистрация</a>
+          </span>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

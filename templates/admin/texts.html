@@ -1,0 +1,123 @@
+{% extends "admin/base.html" %}
+{% load get_string_as_list %}
+{% block title %}
+тексты
+{% endblock %}
+{% block pagename %}
+тексты
+{% endblock %}
+{% block content  %}
+<div class="content">
+<div class="col-md-12">
+    {% if sentences|length > 0 %}
+    {% for sentence in sentences %}
+        <div class="card card-user">
+            <div class="card-body">
+            <div class="resulst">
+                <div>
+                    <b>Автор текста: </b> <span>{{ sentence.author }}</span>  <br><br>
+                    <b>Источник текста: </b> <span>{{ sentence.source }}</span> <br><br>
+                    <b>Время создания текста: </b> <span>{{ sentence.year }} год</span> <br><br>
+                    <b>Стиль текста: </b> <span>{{ sentence.style }}</span> <br><br>
+
+                </div>
+                <b>Текст (на казахском): </b>
+                {% for word in words %}
+                    {% for w  in word %}
+                        {% if sentence.id == w.sentence_id %}
+                        <span 
+                        data-toggle="popover" 
+                        title="Словоформы"
+                        data-trigger="click"
+                        data-content='
+                        {% if wordforms %}
+                            {% for wordform in wordforms %}
+                                {% for item in wordform %}
+                                    {% if item.word_id == w.id %}
+                                        <span>
+                                            <b>  {{ item.wordform  }} </b> - 
+                                            {% for a_o in item.apertium_output|get_string_as_list %}
+                                                {% if tags %}
+                                                    {% for tag in tags %}
+                                                        {% if tag.symbol == a_o %}                                                        
+                                                        {{ tag.eng_title }},
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            <br>
+                                        </span>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% endif %}'
+                        data-html="true"
+                        {% if w.word|lower == search|lower %}
+                            style="color: yellow"
+                        {% endif %}
+                        >
+                        {{ w.word  }}</span>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <br>
+            <b>Текст (на английском): </b> <span>{{ sentence.eng_sentence }}</span><br><br>
+            <b>Дата добавления текста: </b> <span>{{ sentence.created_at }}</span><br><br>
+            <b>Дата обновления  текста: </b> <span>{{ sentence.updated_at }}</span><br><br>
+        </div>
+    </div>
+            {% endfor %}
+            <nav class=" justify-content-center d-flex">
+                    <ul class="pagination">
+                        {% if sentences.has_previous %}
+                            <li class="page-item">
+                                <a href="/expert/my_texts?page={{  sentences.previous_page_number }}{{ url }}" class="page-link " aria-label="Previous" >
+                                        Пред.
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a href="#" class="page-link  disabled " aria-label="Previous" >
+                                        Пред.
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if sentences.number > 2 %}
+                            <li class="page-item"><a href="/expert/my_texts?page=1{{ url }}" class="page-link" aria-label="Goto page 1">1</a></li>
+                            <li class="page-item"><span class="pagination-ellipsis">&hellip;</span></li>
+                        {% endif %}
+                        {% if sentences.has_previous %}
+                            <li class="page-item"><a class="page-link" href="/expert/my_texts?page={{ sentences.previous_page_number }}{{ url }}">{{ sentences.previous_page_number }}</a></li>
+                        {% endif %}
+                        <li class="page-item"><a class="page-link is-current" href="/expert/my_texts?page={{ sentences.number }}{{ url }}">{{ sentences.number }}</a></li>
+                        {% if sentences.has_next %}
+                            <li class="page-item"><a class="page-link" href="/expert/my_texts?page={{ sentences.next_page_number }}{{ url }}">{{ sentences.next_page_number }}</a></li>
+                        {% endif %}
+                        {% if for_pagination >= sentences.number %}
+                            <li class="page-item"><span class="pagination-ellipsis">&hellip;</span></li>
+                            <li class="page-item"><a href="/expert/my_texts?page={{ sentences.paginator.num_pages }}{{ url }}" class="page-link">{{  sentences.paginator.num_pages  }}</a></li>
+                        {% endif %}
+                        {% if sentences.has_next %}
+                            <li class="page-item">
+                                <a href="/expert/my_texts?page={{  sentences.next_page_number }}" class="page-link " aria-label="Previous" >
+                                        Пред.
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a href="#" class="page-link disabled " aria-label="Previous" >
+                                        След.
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+        {% else  %}
+        <div class="alert alert-danger">
+            По вашему запросу ничего не найдено
+        </div>
+        {% endif %}    
+    </div>
+</div>
+{% endblock %}

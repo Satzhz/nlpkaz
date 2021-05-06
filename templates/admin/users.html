@@ -1,0 +1,142 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}
+Пользователи
+{% endblock %}
+{% block pagename %}
+Пользователи
+{% endblock %}
+
+{% block content %}
+<div class="content">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title"> Список пользователи</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class=" text-primary">
+                      <th>
+                        Имя
+                      </th>
+                      <th>
+                        Фамилия
+                      </th>
+                      <th>
+                        Логин
+                      </th>
+                      <th>
+                        Email
+                      </th>
+                      <th>
+                        Дата последнего входа
+                      </th>
+                      <th>
+                        Права
+                      </th>
+                    </thead>
+                    <tbody>
+                      {% if  users  %}
+                        {% for user in users %}
+                        <tr class="{% if user.answer  %}
+                                      bg-success
+                                    {% else %}
+                                      bg-muted
+                                    {% endif %}">
+                          <td>{{ user.first_name }}</td>
+                          <td>{{ user.last_name }}</td>
+                          <td>{{ user.username }}</td>
+                          <td>{{ user.email }}</td>
+                          <td>{{ user.last_login }}</td>
+                          <td>
+                            <form action="">
+                              <input type="hidden" value="{{ user.id }}">
+                              <select name="right" id="" class="user-right form-control">
+                                {{user.right}}
+                                  {% if user.right.right == 'guest' %}
+                                    <option value="guest" selected>Гость</option>
+                                  {% else  %}
+                                    <option value="guest">Гость</option>
+                                  {% endif %}
+                                  {% if user.right.right == "admin" %}
+                                    <option value="admin" selected>Администратор</option>
+                                  {% else %}
+                                    <option value="admin" >Администратор</option>
+                                  {% endif %}
+                                  {% if user.right.right == "expert" %}
+                                  <option value="expert" selected>Лингвист</option>
+                                  {% else %}
+                                  <option value="expert">Лингвист</option>
+                                  {% endif %}
+                                </select>
+                            </form>
+                          </td>
+                        </tr>
+
+                        {% endfor %}
+                      {% else %}
+                      {% endif %}
+                    </tbody>
+                  </table>
+                </div>
+                <br><br>
+                <nav class=" justify-content-center d-flex">
+                    <ul class="pagination">
+                        {% if users.has_previous %}
+                            <li class="page-item">
+                                <a href="/blog?page={{  users.previous_page_number }}{{ url }}" class="page-link " aria-label="Previous" >
+                                        Пред.
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a href="#" class="page-link  disabled " aria-label="Previous" >
+                                        Пред.
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if users.number > 2 %}
+                            <li class="page-item"><a href="?page=1{{ url }}" class="page-link" aria-label="Goto page 1">1</a></li>
+                            <li class="page-item"><span class="pagination-ellipsis">&hellip;</span></li>
+                        {% endif %}
+                        {% if users.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ users.previous_page_number }}{{ url }}">{{ users.previous_page_number }}</a></li>
+                        {% endif %}
+                        <li class="page-item"><a class="page-link is-current" href="?page={{ users.number }}{{ url }}">{{ users.number }}</a></li>
+                        {% if users.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ users.next_page_number }}{{ url }}">{{ users.next_page_number }}</a></li>
+                        {% endif %}
+                        {% if for_pagination >= users.number %}
+                            <li class="page-item"><span class="pagination-ellipsis">&hellip;</span></li>
+                            <li class="page-item"><a href="?page={{ users.paginator.num_pages }}{{ url }}" class="page-link">{{  users.paginator.num_pages  }}</a></li>
+                        {% endif %}
+
+
+                        <!-- <li class="page-item active"><a href="#" class="page-link">02</a></li>
+                        <li class="page-item"><a href="#" class="page-link">03</a></li>
+                        <li class="page-item mx-3">...</li>
+                        <li class="page-item"><a href="#" class="page-link">09</a></li> -->
+                        {% if users.has_next %}
+                            <li class="page-item">
+                                <a href="/blog?page={{  users.next_page_number }}" class="page-link " aria-label="Previous" >
+                                        Пред.
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a href="#" class="page-link disabled " aria-label="Previous" >
+                                        След.
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}

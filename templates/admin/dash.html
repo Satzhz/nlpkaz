@@ -1,0 +1,124 @@
+{% extends "admin/base.html" %}
+{% block title %}
+Главная
+{% endblock %}
+{% block pagename %}
+Главная
+{% endblock %}
+{% block content  %}
+<div class="content">
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+        <div class="card-body ">
+        <div class="row">
+            <div class="col-5 col-md-4">
+            <div class="icon-big text-center icon-warning">
+                <i class="nc-icon nc-globe text-warning"></i>
+            </div>
+            </div>
+            <div class="col-7 col-md-8">
+            <div class="numbers">
+                <p class="card-category">Трафик</p>
+                <p class="card-title">1GB
+                <p>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="card-footer ">
+        <hr>
+        
+        </div>
+    </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+        <div class="card-body ">
+        <div class="row">
+            <div class="col-5 col-md-4">
+            <div class="icon-big text-center icon-warning">
+                <i class="nc-icon nc-money-coins text-success"></i>
+            </div>
+            </div>
+            <div class="col-7 col-md-8">
+            <div class="numbers">
+                <p class="card-category"> тексты</p>
+                <p class="card-title">{{ texts }}
+                <p>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="card-footer ">
+        <hr>
+        
+        </div>
+    </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+        <div class="card-body ">
+        <div class="row">
+            <div class="col-5 col-md-4">
+            <div class="icon-big text-center icon-warning">
+                <i class="nc-icon nc-chat-33 text-danger"></i>
+            </div>
+            </div>
+            <div class="col-7 col-md-8">
+            <div class="numbers">
+                <p class="card-category">Сообщения</p>
+                <p class="card-title">{{ messages }}
+                <p>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="card-footer ">
+        <hr>
+        </div>
+    </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats">
+        <div class="card-body ">
+        <div class="row">
+            <div class="col-5 col-md-4">
+            <div class="icon-big text-center icon-warning">
+                <i class="nc-icon nc-circle-10 text-primary"></i>
+            </div>
+            </div>
+            <div class="col-7 col-md-8">
+            <div class="numbers">
+                <p class="card-category">Пользователи</p>
+                <p class="card-title">{{users}}
+                <p>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="card-footer ">
+        <hr>
+        </div>
+    </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+    <div class="card ">
+        <div class="card-header ">
+        <h5 class="card-title">Активность пользователей</h5>
+        <p class="card-category">24 час</p>
+        </div>
+        <div class="card-body ">
+        <canvas id=chartHours width="400" height="100"></canvas>
+        </div>
+        <div class="card-footer ">
+        <hr>
+        
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+{% endblock %}

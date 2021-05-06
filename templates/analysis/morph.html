@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load get_string_as_list %}
+
+{% block title %}
+    Главная страница
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Морфологиялық талдау(сөз таптарын анықтау)</h1>
+    <div class="row mt-5 d-flex justify-content-center">
+        <div class="col-md-5">
+            <div class="form-group">
+                <form id="analy" method="POST">
+
+                <textarea class="form-control" rows="15" name="text" placeholder="текст талдау... " id="analysis-editor"></textarea>
+                {% csrf_token %}
+            </div>
+        </div>
+        <div class="col-md-2 text-center">
+                <button class="btn btn-info" id="analysis-button" data-loading-text="Загрузка"> Талдау</button>
+                            </form>
+
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-info" role="status" id="analysis-loading" style="display: none;">
+                  <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                        {% if words %}
+                        {% for word in words %}
+                                <span 
+                                data-toggle="popover" 
+                                title="Сөз формалары"
+                                data-content='
+                                {% if wordforms %}
+                                    {% for wordform in wordforms %}
+                                        {% for item in wordform %}
+                                            {% if item.word_id == word.id %}
+                                                <span>
+                                                    <b>  {{ item.wordform  }} </b> - 
+                                                    {% for a_o in item.apertium_output|get_string_as_list %}
+                                                        {% if tags %}
+                                                            {% for tag in tags %}
+                                                                {% if tag.symbol == a_o %}
+                                                                    {{ tag.eng_title }},
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <br>
+                                                </span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}'
+                                data-html="true"
+                                >{{ word.word  }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+
+
+   
+    
+
+
+
+{% endblock %}
